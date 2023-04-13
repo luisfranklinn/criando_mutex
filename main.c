@@ -3,8 +3,6 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#define NUM_THREADS 8
-
 int saldo = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -38,17 +36,17 @@ void *saque(void *arg) {
 }
 
 int main() {
-    pthread_t threads[NUM_THREADS];
+    pthread_t threads[8];
     int i;
 
     // cria threads de deposito e saque
-    for (i = 0; i < NUM_THREADS/2; i++) {
+    for (i = 0; i < 4; i++) {
         pthread_create(&threads[i], NULL, deposito, NULL);
         pthread_create(&threads[i+4], NULL, saque, NULL);
     }
 
     // espera pelo término de todas as threads
-    for (i = 0; i < NUM_THREADS; i++) {
+    for (i = 0; i < 8; i++) {
         pthread_join(threads[i], NULL);
     }
 
